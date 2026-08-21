@@ -1,0 +1,110 @@
+#!/bin/sh
+#
+# CUPS filter for HP LaserJet Professional P1102 (ZjStream) via foo2zjs.
+# Invoked as: foo2zjs-cups job user title copies options [file]
+# Input:  PostScript (CUPS converts PDF -> PS with cgpdftops first)
+# Output: ZjStream on stdout
+#
+DRVROOT=/Library/Printers/foo2zjs
+GSDIR="$DRVROOT/share/ghostscript"
+
+# macOS runs CUPS filters inside a sandbox that CANNOT reach /usr/local,
+# /opt/homebrew or /opt/local. Every helper this filter uses must therefore
+# live under /Library/Printers, and Ghostscript needs its resource tree
+# pointed at a copy that lives there too.
+#
+# Do NOT "simplify" these back to the system copies. The failure is silent:
+# gs is simply not found, the wrapper still emits a valid PJL job header
+# with no raster in it, and the printer sits blinking forever waiting for
+# page data that never arrives.
+PATH="$DRVROOT/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+GSBIN="$DRVROOT/bin/gs"
+GS_LIB="$GSDIR/Resource/Init:$GSDIR/lib:$GSDIR/Resource/Font"
+GS_OPTIONS="-sICCProfilesDir=$GSDIR/iccprofiles/"
+export PATH GSBIN GS_LIB GS_OPTIONS
+
+OPTS=" $5 "
+
+# Return the value of a CUPS option, or empty if unset.
+optval() {
+    printf '%s' "$OPTS" | tr ' \t' '\n\n' | grep -i "^$1=" | tail -1 | cut -d= -f2-
+}
+
+PAPER=a4
+case "`optval PageSize`" in
+    Letter)             PAPER=letter ;;
+    A4)                 PAPER=a4 ;;
+    A5)                 PAPER=a5 ;;
+    A6)                 PAPER=70 ;;
+    B5)                 PAPER=b5 ;;
+    Executive)          PAPER=executive ;;
+    Legal)              PAPER=legal ;;
+    Env10)              PAPER=20 ;;
+    EnvC5)              PAPER=envC5 ;;
+    EnvDL)              PAPER=envDL ;;
+    EnvISOB5)           PAPER=envB5 ;;
+    EnvMonarch)         PAPER=envMonarch ;;
+    Postcard)           PAPER=43 ;;
+    DoublePostcard)     PAPER=82 ;;
+    FanfoldGermanLegal) PAPER=258 ;;
+    w522h737)           PAPER=263 ;;
+    w553h765)           PAPER=264 ;;
+    w558h774)           PAPER=257 ;;
+esac
+
+MEDIA=1
+case "`optval MediaType`" in
+    Standard|Plain)  MEDIA=1 ;;
+    Light)           MEDIA=258 ;;
+    Bond)            MEDIA=261 ;;
+    Cardstock|Heavy|ExtraHeavy) MEDIA=261 ;;
+    Rough)           MEDIA=263 ;;
+    Labels)          MEDIA=265 ;;
+    Envelope)        MEDIA=267 ;;
+    Vellum)          MEDIA=273 ;;
+    Color)           MEDIA=512 ;;
+    Letterhead)      MEDIA=513 ;;
+    Preprinted)      MEDIA=514 ;;
+    Prepunched)      MEDIA=515 ;;
+    Recycled)        MEDIA=516 ;;
+    Transparency)    MEDIA=2 ;;
+esac
+
+SOURCE=7
+case "`optval InputSlot`" in
+    Upper)    SOURCE=1 ;;
+    Lower|Middle) SOURCE=2 ;;
+    Manual|Envelope) SOURCE=4 ;;
+    Auto)     SOURCE=7 ;;
+esac
+
+DENSITY=3
+case "`optval Density`" in
+    Density1) DENSITY=1 ;;
+    Density2) DENSITY=2 ;;
+    Density3) DENSITY=3 ;;
+    Density4) DENSITY=4 ;;
+    Density5) DENSITY=5 ;;
+esac
+
+DRAFT=
+case "`optval Quality`" in
+    draft) DRAFT=-t ;;
+esac
+
+COPIES="$4"
+INFILE="$6"
+case "$COPIES" in ''|*[!0-9]*) COPIES=1 ;; esac
+
+# foo2zjs-wrapper reads the job/user labels from the environment.
+LPJOB="$3"; LPUSER="$2"; LPHOST="${HOSTNAME:-localhost}"
+export LPJOB LPUSER LPHOST
+
+set -- foo2zjs-wrapper -z2 -P -L0 \
+    -p "$PAPER" -m "$MEDIA" -s "$SOURCE" -T "$DENSITY" -n "$COPIES" $DRAFT
+
+if [ -n "$INFILE" ]; then
+    exec "$@" "$INFILE"
+else
+    exec "$@"
+fi

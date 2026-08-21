@@ -1,0 +1,331 @@
+*PPD-Adobe: "4.3"
+*%
+*% For information on using this, and to obtain the required backend
+*% script, consult http://www.openprinting.org/
+*%
+*% This file is published under the GNU General Public License
+*%
+*% PPD-O-MATIC (3.0.0 or newer) generated this PPD file. It is for use with 
+*% all programs and environments which use PPD files for dealing with
+*% printer capability information. The printer must be configured with the
+*% "foomatic-rip" backend filter script of Foomatic 3.0.0 or newer. This 
+*% file and "foomatic-rip" work together to support PPD-controlled printer
+*% driver option access with arbitrary free software printer drivers and
+*% printing spoolers.
+*%
+*% To save this file on your disk, wait until the download has completed
+*% (the animation of the browser logo must stop) and then use the
+*% "Save as..." command in the "File" menu of your browser or in the 
+*% pop-up manu when you click on this document with the right mouse button.
+*% DO NOT cut and paste this file into an editor with your mouse. This can
+*% introduce additional line breaks which lead to unexpected results.
+*%
+*% You may save this file as 'HP-LaserJet_Pro_P1102-foo2zjs-z2.ppd'
+*%
+*%
+*FormatVersion:	"4.3"
+*FileVersion:	"1.1"
+*LanguageVersion: English 
+*LanguageEncoding: ISOLatin1
+*PCFileName:	"FOO2ZJS-.PPD"
+*Manufacturer:	"HP"
+*Product:	"(HP LaserJet Professional P1102)"
+*cupsVersion:	1.0
+*cupsManualCopies: True
+*cupsModelNumber:  2
+*cupsFilter:	"application/vnd.cups-postscript 0 /Library/Printers/foo2zjs/filter/foo2zjs-cups"
+*%pprRIP:        foomatic-rip other
+*ModelName:     "HP LaserJet Pro P1102"
+*ShortNickName: "HP LaserJet P1102 foo2zjs"
+*NickName:      "HP LaserJet Professional P1102 (foo2zjs)"
+*1284DeviceID:  "MFG:Hewlett-Packard;MDL:HP LaserJet Professional P1102;CMD:ZJS,PJL;"
+*PSVersion:	"(3010.000) 550"
+*PSVersion:	"(3010.000) 651"
+*PSVersion:	"(3010.000) 652"
+*PSVersion:	"(3010.000) 653"
+*PSVersion:	"(3010.000) 704"
+*PSVersion:	"(3010.000) 705"
+*PSVersion:	"(3010.000) 800"
+*LanguageLevel:	"3"
+*ColorDevice:	False
+*DefaultColorSpace: Gray
+*FileSystem:	False
+*Throughput:	"1"
+*LandscapeOrientation: Plus90
+*TTRasterizer:	Type42
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet Professional P1102;CMD:ZJS,PJL,ACL,HTTP;DES:HP LaserJet Professional P1102;DRV:Dfoo2zjs-z2,R1,M0,TF;"
+
+*driverName foo2zjs-z2/foo2zjs-z2: ""
+*driverType F/Filter: ""
+*driverUrl: "http://foo2zjs.rkkda.com/"
+*driverObsolete: False
+
+
+
+
+*HWMargins: 11.34 11.34 11.34 11.34
+*VariablePaperSize: True
+*MaxMediaWidth: 100000
+*MaxMediaHeight: 100000
+*NonUIOrderDependency: 135 AnySetup *CustomPageSize
+*CustomPageSize True: "pop pop pop pop pop
+%% FoomaticRIPOptionSetting: PageSize=Custom"
+*End
+*FoomaticRIPOptionSetting PageSize=Custom: "-pCustom.%0x%1 "
+*ParamCustomPageSize Width: 1 points 36 100000
+*ParamCustomPageSize Height: 2 points 36 100000
+*ParamCustomPageSize Orientation: 3 int 0 0
+*ParamCustomPageSize WidthOffset: 4 points 0 0
+*ParamCustomPageSize HeightOffset: 5 points 0 0
+
+*FoomaticIDs: HP-LaserJet_Pro_P1102 foo2zjs-z2
+*FoomaticRIPCommandLine: "foo2zjs-wrapper -z2 -P -L0 %A"
+
+*OpenGroup: General/General
+
+*OpenUI *Quality/Printing Quality: PickOne
+*FoomaticRIPOption Quality: enum CmdLine A
+*OrderDependency: 110 AnySetup *Quality
+*DefaultQuality: normal
+*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
+*FoomaticRIPOptionSetting Quality=draft: " -t  "
+*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
+*FoomaticRIPOptionSetting Quality=normal: "  "
+*CloseUI: *Quality
+
+*FoomaticRIPOption Resolution: enum CmdLine A 130
+*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+
+*OpenUI *PageSize/Page Size: PickOne
+*FoomaticRIPOption PageSize: enum CmdLine A
+*OrderDependency: 135 AnySetup *PageSize
+*DefaultPageSize: A4
+*PageSize Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
+*FoomaticRIPOptionSetting PageSize=Letter: "-p1 "
+*PageSize A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
+*FoomaticRIPOptionSetting PageSize=A4: "-p9 "
+*PageSize A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
+*FoomaticRIPOptionSetting PageSize=A5: "-p11 "
+*PageSize A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
+*FoomaticRIPOptionSetting PageSize=A6: "-p70 "
+*PageSize B5/B5: "%% FoomaticRIPOptionSetting: PageSize=B5"
+*FoomaticRIPOptionSetting PageSize=B5: "-p13 "
+*PageSize DoublePostcard/Double Postcard: "%% FoomaticRIPOptionSetting: PageSize=DoublePostcard"
+*FoomaticRIPOptionSetting PageSize=DoublePostcard: "-p82 "
+*PageSize Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
+*FoomaticRIPOptionSetting PageSize=Env10: "-p20 "
+*PageSize EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
+*FoomaticRIPOptionSetting PageSize=EnvC5: "-p28 "
+*PageSize EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
+*FoomaticRIPOptionSetting PageSize=EnvDL: "-p27 "
+*PageSize EnvISOB5/Env ISO B5: "%% FoomaticRIPOptionSetting: PageSize=EnvISOB5"
+*FoomaticRIPOptionSetting PageSize=EnvISOB5: "-p34 "
+*PageSize EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
+*FoomaticRIPOptionSetting PageSize=EnvMonarch: "-p37 "
+*PageSize Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
+*FoomaticRIPOptionSetting PageSize=Executive: "-p7 "
+*PageSize FanfoldGermanLegal/Fanfold German Legal: "%% FoomaticRIPOptionSetting: PageSize=FanfoldGermanLegal"
+*FoomaticRIPOptionSetting PageSize=FanfoldGermanLegal: "-p258 "
+*PageSize Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
+*FoomaticRIPOptionSetting PageSize=Legal: "-p5 "
+*PageSize Postcard/Postcard: "%% FoomaticRIPOptionSetting: PageSize=Postcard"
+*FoomaticRIPOptionSetting PageSize=Postcard: "-p43 "
+*PageSize w522h737/16k 184x260 mm: "%% FoomaticRIPOptionSetting: PageSize=w522h737"
+*FoomaticRIPOptionSetting PageSize=w522h737: "-p263 "
+*PageSize w553h765/16k 195x270 mm: "%% FoomaticRIPOptionSetting: PageSize=w553h765"
+*FoomaticRIPOptionSetting PageSize=w553h765: "-p264 "
+*PageSize w558h774/16k 197x273 mm: "%% FoomaticRIPOptionSetting: PageSize=w558h774"
+*FoomaticRIPOptionSetting PageSize=w558h774: "-p257 "
+*CloseUI: *PageSize
+
+*OpenUI *PageRegion: PickOne
+*OrderDependency: 135 AnySetup *PageRegion
+*DefaultPageRegion: A4
+*PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
+*PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
+*PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
+*PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
+*PageRegion B5/B5: "%% FoomaticRIPOptionSetting: PageSize=B5"
+*PageRegion DoublePostcard/Double Postcard: "%% FoomaticRIPOptionSetting: PageSize=DoublePostcard"
+*PageRegion Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
+*PageRegion EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
+*PageRegion EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
+*PageRegion EnvISOB5/Env ISO B5: "%% FoomaticRIPOptionSetting: PageSize=EnvISOB5"
+*PageRegion EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
+*PageRegion Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
+*PageRegion FanfoldGermanLegal/Fanfold German Legal: "%% FoomaticRIPOptionSetting: PageSize=FanfoldGermanLegal"
+*PageRegion Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
+*PageRegion Postcard/Postcard: "%% FoomaticRIPOptionSetting: PageSize=Postcard"
+*PageRegion w522h737/16k 184x260 mm: "%% FoomaticRIPOptionSetting: PageSize=w522h737"
+*PageRegion w553h765/16k 195x270 mm: "%% FoomaticRIPOptionSetting: PageSize=w553h765"
+*PageRegion w558h774/16k 197x273 mm: "%% FoomaticRIPOptionSetting: PageSize=w558h774"
+*CloseUI: *PageRegion
+
+*DefaultImageableArea: A4
+*ImageableArea Letter/Letter: "11.34 11.34 600.66 780.66"
+*ImageableArea A4/A4: "11.34 11.34 583.66 830.66"
+*ImageableArea A5/A5: "11.34 11.34 408.66 583.66"
+*ImageableArea A6/A6: "11.34 11.34 285.66 408.66"
+*ImageableArea B5/B5: "11.34 11.34 486.66 696.66"
+*ImageableArea DoublePostcard/Double Postcard: "11.34 11.34 271.66 404.66"
+*ImageableArea Env10/Env #10: "11.34 11.34 285.66 672.66"
+*ImageableArea EnvC5/Env C5: "11.34 11.34 447.66 637.66"
+*ImageableArea EnvDL/Env DL: "11.34 11.34 299.66 611.66"
+*ImageableArea EnvISOB5/Env ISO B5: "11.34 11.34 486.66 696.66"
+*ImageableArea EnvMonarch/Env Monarch: "11.34 11.34 267.66 528.66"
+*ImageableArea Executive/Executive: "11.34 11.34 510.66 744.66"
+*ImageableArea FanfoldGermanLegal/Fanfold German Legal: "11.34 11.34 600.66 996.66"
+*ImageableArea Legal/Legal: "11.34 11.34 600.66 996.66"
+*ImageableArea Postcard/Postcard: "11.34 11.34 271.66 404.66"
+*ImageableArea w522h737/16k 184x260 mm: "11.34 11.34 510.66 725.66"
+*ImageableArea w553h765/16k 195x270 mm: "11.34 11.34 541.66 753.66"
+*ImageableArea w558h774/16k 197x273 mm: "11.34 11.34 546.66 762.66"
+
+*DefaultPaperDimension: A4
+*PaperDimension Letter/Letter: "612 792"
+*PaperDimension A4/A4: "595 842"
+*PaperDimension A5/A5: "420 595"
+*PaperDimension A6/A6: "297 420"
+*PaperDimension B5/B5: "498 708"
+*PaperDimension DoublePostcard/Double Postcard: "283 416"
+*PaperDimension Env10/Env #10: "297 684"
+*PaperDimension EnvC5/Env C5: "459 649"
+*PaperDimension EnvDL/Env DL: "311 623"
+*PaperDimension EnvISOB5/Env ISO B5: "498 708"
+*PaperDimension EnvMonarch/Env Monarch: "279 540"
+*PaperDimension Executive/Executive: "522 756"
+*PaperDimension FanfoldGermanLegal/Fanfold German Legal: "612 1008"
+*PaperDimension Legal/Legal: "612 1008"
+*PaperDimension Postcard/Postcard: "283 416"
+*PaperDimension w522h737/16k 184x260 mm: "522 737"
+*PaperDimension w553h765/16k 195x270 mm: "553 765"
+*PaperDimension w558h774/16k 197x273 mm: "558 774"
+
+*OpenUI *InputSlot/Media Source: PickOne
+*FoomaticRIPOption InputSlot: enum CmdLine A
+*OrderDependency: 150 AnySetup *InputSlot
+*DefaultInputSlot: Auto
+*InputSlot Upper/Upper or Only One InputSlot: "%% FoomaticRIPOptionSetting: InputSlot=Upper"
+*FoomaticRIPOptionSetting InputSlot=Upper: "-s1 "
+*InputSlot Middle/Middle Tray: "%% FoomaticRIPOptionSetting: InputSlot=Middle"
+*FoomaticRIPOptionSetting InputSlot=Middle: "-s3 "
+*InputSlot Lower/Lower Tray: "%% FoomaticRIPOptionSetting: InputSlot=Lower"
+*FoomaticRIPOptionSetting InputSlot=Lower: "-s2 "
+*InputSlot Auto/Auto Source: "%% FoomaticRIPOptionSetting: InputSlot=Auto"
+*FoomaticRIPOptionSetting InputSlot=Auto: "-s7 "
+*InputSlot Envelope/Envelope: "%% FoomaticRIPOptionSetting: InputSlot=Envelope"
+*FoomaticRIPOptionSetting InputSlot=Envelope: "-s5 "
+*InputSlot Manual/Manual Feed: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
+*FoomaticRIPOptionSetting InputSlot=Manual: "-s4 "
+*CloseUI: *InputSlot
+
+*OpenUI *MediaType/Media Type: PickOne
+*FoomaticRIPOption MediaType: enum CmdLine A
+*OrderDependency: 150 AnySetup *MediaType
+*DefaultMediaType: Standard
+*MediaType Bond/Bond: "%% FoomaticRIPOptionSetting: MediaType=Bond"
+*FoomaticRIPOptionSetting MediaType=Bond: "-m260 "
+*MediaType Color/Color: "%% FoomaticRIPOptionSetting: MediaType=Color"
+*FoomaticRIPOptionSetting MediaType=Color: "-m512 "
+*MediaType Envelope/Envelope: "%% FoomaticRIPOptionSetting: MediaType=Envelope"
+*FoomaticRIPOptionSetting MediaType=Envelope: "-m267 "
+*MediaType ExtraHeavy/Extra Heavy: "%% FoomaticRIPOptionSetting: MediaType=ExtraHeavy"
+*FoomaticRIPOptionSetting MediaType=ExtraHeavy: "-m283 "
+*MediaType Heavy/Heavy: "%% FoomaticRIPOptionSetting: MediaType=Heavy"
+*FoomaticRIPOptionSetting MediaType=Heavy: "-m262 "
+*MediaType Labels/Labels: "%% FoomaticRIPOptionSetting: MediaType=Labels"
+*FoomaticRIPOptionSetting MediaType=Labels: "-m265 "
+*MediaType Letterhead/Letterhead: "%% FoomaticRIPOptionSetting: MediaType=Letterhead"
+*FoomaticRIPOptionSetting MediaType=Letterhead: "-m513 "
+*MediaType Light/Light: "%% FoomaticRIPOptionSetting: MediaType=Light"
+*FoomaticRIPOptionSetting MediaType=Light: "-m258 "
+*MediaType Medium/Medium: "%% FoomaticRIPOptionSetting: MediaType=Medium"
+*FoomaticRIPOptionSetting MediaType=Medium: "-m282 "
+*MediaType Preprinted/Preprinted: "%% FoomaticRIPOptionSetting: MediaType=Preprinted"
+*FoomaticRIPOptionSetting MediaType=Preprinted: "-m514 "
+*MediaType Prepunched/Prepunched: "%% FoomaticRIPOptionSetting: MediaType=Prepunched"
+*FoomaticRIPOptionSetting MediaType=Prepunched: "-m515 "
+*MediaType Recycled/Recycled: "%% FoomaticRIPOptionSetting: MediaType=Recycled"
+*FoomaticRIPOptionSetting MediaType=Recycled: "-m516 "
+*MediaType Rough/Rough: "%% FoomaticRIPOptionSetting: MediaType=Rough"
+*FoomaticRIPOptionSetting MediaType=Rough: "-m263 "
+*MediaType Standard/Standard Paper: "%% FoomaticRIPOptionSetting: MediaType=Standard"
+*FoomaticRIPOptionSetting MediaType=Standard: "-m1 "
+*MediaType ThickStock/Thick Stock: "%% FoomaticRIPOptionSetting: MediaType=ThickStock"
+*FoomaticRIPOptionSetting MediaType=ThickStock: "-m261 "
+*MediaType Transparency/Transparency: "%% FoomaticRIPOptionSetting: MediaType=Transparency"
+*FoomaticRIPOptionSetting MediaType=Transparency: "-m2 "
+*MediaType Vellum/Vellum: "%% FoomaticRIPOptionSetting: MediaType=Vellum"
+*FoomaticRIPOptionSetting MediaType=Vellum: "-m273 "
+*CloseUI: *MediaType
+
+*OpenUI *Density/Print Density: PickOne
+*FoomaticRIPOption Density: enum CmdLine A
+*OrderDependency: 150 AnySetup *Density
+*DefaultDensity: Density3
+*Density Density1/Extra Light (1): "%% FoomaticRIPOptionSetting: Density=Density1"
+*FoomaticRIPOptionSetting Density=Density1: "-T1 "
+*Density Density2/Light (2): "%% FoomaticRIPOptionSetting: Density=Density2"
+*FoomaticRIPOptionSetting Density=Density2: "-T2 "
+*Density Density3/Medium (3): "%% FoomaticRIPOptionSetting: Density=Density3"
+*FoomaticRIPOptionSetting Density=Density3: "-T3 "
+*Density Density4/Dark (4): "%% FoomaticRIPOptionSetting: Density=Density4"
+*FoomaticRIPOptionSetting Density=Density4: "-T4 "
+*Density Density5/Extra Dark (5): "%% FoomaticRIPOptionSetting: Density=Density5"
+*FoomaticRIPOptionSetting Density=Density5: "-T5 "
+*CloseUI: *Density
+
+
+*CloseGroup: General
+
+*OpenGroup: Adjustment/Adjustment
+
+
+*CloseGroup: Adjustment
+
+*OpenGroup: Miscellaneous/Miscellaneous
+
+
+
+*CloseGroup: Miscellaneous
+
+
+*% Generic boilerplate PPD stuff as standard PostScript fonts and so on
+
+*DefaultFont: Courier
+*Font AvantGarde-Book: Standard "(001.006S)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(001.006S)" Standard ROM
+*Font AvantGarde-Demi: Standard "(001.007S)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(001.007S)" Standard ROM
+*Font Bookman-Demi: Standard "(001.004S)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(001.004S)" Standard ROM
+*Font Bookman-Light: Standard "(001.004S)" Standard ROM
+*Font Bookman-LightItalic: Standard "(001.004S)" Standard ROM
+*Font Courier: Standard "(002.004S)" Standard ROM
+*Font Courier-Bold: Standard "(002.004S)" Standard ROM
+*Font Courier-BoldOblique: Standard "(002.004S)" Standard ROM
+*Font Courier-Oblique: Standard "(002.004S)" Standard ROM
+*Font Helvetica: Standard "(001.006S)" Standard ROM
+*Font Helvetica-Bold: Standard "(001.007S)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(001.007S)" Standard ROM
+*Font Helvetica-Narrow: Standard "(001.006S)" Standard ROM
+*Font Helvetica-Narrow-Bold: Standard "(001.007S)" Standard ROM
+*Font Helvetica-Narrow-BoldOblique: Standard "(001.007S)" Standard ROM
+*Font Helvetica-Narrow-Oblique: Standard "(001.006S)" Standard ROM
+*Font Helvetica-Oblique: Standard "(001.006S)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(001.009S)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(001.007S)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(001.006S)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(001.007S)" Standard ROM
+*Font Palatino-Bold: Standard "(001.005S)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(001.005S)" Standard ROM
+*Font Palatino-Italic: Standard "(001.005S)" Standard ROM
+*Font Palatino-Roman: Standard "(001.005S)" Standard ROM
+*Font Symbol: Special "(001.007S)" Special ROM
+*Font Times-Bold: Standard "(001.007S)" Standard ROM
+*Font Times-BoldItalic: Standard "(001.009S)" Standard ROM
+*Font Times-Italic: Standard "(001.007S)" Standard ROM
+*Font Times-Roman: Standard "(001.007S)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(001.007S)" Standard ROM
+*Font ZapfDingbats: Special "(001.004S)" Standard ROM
+
