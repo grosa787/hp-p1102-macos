@@ -140,6 +140,17 @@ presents a fake USB CD-ROM. If `/usr/libexec/cups/backend/usb` does not list the
 printer, Smart Install may need disabling with HP's `SIUtility` (Windows) or
 `usb_modeswitch` (Linux).
 
+## Two-sided printing
+
+The P1102 has no duplexer. [**Duplex Helper**](duplex-helper/) is a small
+native app in this repo that prints the odd pages, shows you how to reinsert
+the stack, then prints the even pages on the backs — with a calibration step
+that works out the right reinsertion for any printer.
+
+```sh
+cd duplex-helper && ./build.sh --install
+```
+
 ## Other printers
 
 The same driver covers other ZjStream models. They need different model flags,
