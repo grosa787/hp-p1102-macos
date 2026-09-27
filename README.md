@@ -9,6 +9,11 @@ bundles one. This installs a self-contained driver and creates a print queue.
 
 Verified on macOS 26.5 (Apple Silicon) with a P1102 over USB.
 
+This fork adds a one-command setup that installs missing prerequisites, creates
+the USB print queue, and makes the P1102 the default printer. The driver itself
+was developed by [cragkhit](https://github.com/cragkhit/hp-p1102-macos) using
+the open-source `foo2zjs` rasteriser.
+
 ## Why a special driver is needed
 
 The P1102 is a *host-based* printer. It reports:
@@ -25,12 +30,29 @@ nothing.
 
 `foo2zjs` does that rendering. This repo packages it for macOS.
 
-## Install
+## One-command setup
+
+Connect and power on the P1102, then run this single command in Terminal:
 
 ```sh
-git clone https://github.com/cragkhit/hp-p1102-macos.git
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grosa787/hp-p1102-macos/main/setup.sh)"
+```
+
+The setup may ask for your macOS administrator password. It installs Apple's
+command line tools, Homebrew, or Ghostscript only if missing, then creates the
+**HP_LaserJet_P1102** queue and makes it the default for your user and the Mac.
+The printer stays connected by USB. The setup does not print a test page.
+
+If you prefer to inspect the script before running it, read
+[`setup.sh`](setup.sh) and [`install.sh`](install.sh) in this repository.
+
+## Manual installation
+
+```sh
+git clone https://github.com/grosa787/hp-p1102-macos.git
 cd hp-p1102-macos
-sudo ./install.sh
+sudo ./install.sh --default
+lpoptions -d HP_LaserJet_P1102
 ```
 
 Then print to the **HP_LaserJet_P1102** queue from any app.
@@ -41,6 +63,7 @@ Options:
 --queue NAME    name for the print queue      (default: HP_LaserJet_P1102)
 --paper SIZE    default paper, A4 or Letter   (default: A4)
 --no-queue      install the driver only
+--default       make the new printer the macOS system default
 --gs PATH       use a specific Ghostscript binary
 ```
 
@@ -65,6 +88,11 @@ or Ghostscript later will not break printing.
 
 **macOS runs CUPS filters inside a sandbox that cannot reach `/usr/local`,
 `/opt/homebrew` or `/opt/local`.**
+
+The P1102 also expects a **1200 × 600 dpi** raster in this driver. Feeding a
+600 × 600 dpi bitmap directly to `foo2zjs` without changing its resolution
+setting makes the printed content about half as wide. The installed wrapper
+renders and encodes at the same resolution, preserving the PDF's proportions.
 
 A filter that calls Ghostscript by name works perfectly when you test it by
 hand in a terminal, then fails inside CUPS with `gs: command not found`. The

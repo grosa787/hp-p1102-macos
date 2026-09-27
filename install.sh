@@ -15,6 +15,7 @@ PPDNAME=HP-LaserJet-P1102-foo2zjs.ppd
 QUEUE=HP_LaserJet_P1102
 PAPER=A4
 MAKE_QUEUE=1
+SET_DEFAULT=0
 GS=""
 HERE=$(cd "$(dirname "$0")" && pwd)
 
@@ -25,6 +26,7 @@ Usage: sudo ./install.sh [options]
   --queue NAME    Name for the print queue      (default: $QUEUE)
   --paper SIZE    Default paper, A4 or Letter   (default: $PAPER)
   --no-queue      Install the driver but do not create a print queue
+  --default       Make the new printer the macOS system default
   --gs PATH       Use this Ghostscript binary instead of auto-detecting
   -h, --help      Show this help
 
@@ -37,6 +39,7 @@ while [ $# -gt 0 ]; do
         --queue)    QUEUE="$2"; shift 2 ;;
         --paper)    PAPER="$2"; shift 2 ;;
         --no-queue) MAKE_QUEUE=0; shift ;;
+        --default)  SET_DEFAULT=1; shift ;;
         --gs)       GS="$2"; shift 2 ;;
         -h|--help)  usage ;;
         *) echo "Unknown option: $1" >&2; exit 2 ;;
@@ -49,6 +52,8 @@ die()  { printf 'ERROR: %s\n' "$1" >&2; exit 1; }
 
 [ "$(uname -s)" = "Darwin" ] || die "This installer is for macOS only."
 [ "$(id -u)" -eq 0 ] || die "Please run with sudo:  sudo ./install.sh"
+[ "$MAKE_QUEUE" -eq 1 ] || [ "$SET_DEFAULT" -eq 0 ] \
+    || die "--default requires a print queue (remove --no-queue)."
 
 case "$PAPER" in
     A4|a4)          PAPER=A4 ;;
@@ -243,8 +248,9 @@ info "produced $SIZE bytes of valid ZjStream. Rendering works."
 if [ "$MAKE_QUEUE" -eq 1 ]; then
     say "Creating the print queue '$QUEUE'"
     URI=$(/usr/libexec/cups/backend/usb 2>/dev/null \
-          | grep -iE 'P1102|P1566|P1606' | awk '{print $2}' | head -1)
+          | grep -i 'P1102' | awk '{print $2}' | head -1)
     if [ -z "$URI" ]; then
+        [ "$SET_DEFAULT" -eq 0 ] || die "No supported printer found on USB; cannot make it the default."
         info "No supported printer found on USB -- skipping queue creation."
         info "Plug the printer in, power it on, then run:"
         info "  sudo $0 --queue $QUEUE"
@@ -256,8 +262,11 @@ if [ "$MAKE_QUEUE" -eq 1 ]; then
                 -o printer-is-shared=false -E
         cupsenable "$QUEUE" 2>/dev/null || true
         cupsaccept "$QUEUE" 2>/dev/null || true
+        if [ "$SET_DEFAULT" -eq 1 ]; then
+            lpadmin -d "$QUEUE" || die "Could not set '$QUEUE' as the default printer."
+            info "system default printer is now '$QUEUE'"
         # Adding a queue can steal the system default; put it back.
-        if [ -n "$DEFAULT_BEFORE" ] && [ "$DEFAULT_BEFORE" != "$QUEUE" ]; then
+        elif [ -n "$DEFAULT_BEFORE" ] && [ "$DEFAULT_BEFORE" != "$QUEUE" ]; then
             lpadmin -d "$DEFAULT_BEFORE" 2>/dev/null || true
             info "left the default printer as '$DEFAULT_BEFORE'"
         fi
