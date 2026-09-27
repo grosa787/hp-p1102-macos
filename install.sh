@@ -115,8 +115,10 @@ info "resources: $GSRES"
 # ---------------------------------------------------------------------------
 say "Installing into $DEST"
 
-install -d -o root -g wheel -m 755 "$DEST/bin" "$DEST/filter" "$DEST/lib" \
+install -d -o root -g wheel -m 755 "$DEST/bin" "$DEST/filter" \
                                    "$DEST/share/ghostscript"
+rm -rf "$DEST/lib"
+install -d -o root -g wheel -m 755 "$DEST/lib"
 
 install -o root -g wheel -m 755 "$BUILD/foo2zjs" "$DEST/bin/foo2zjs"
 
@@ -157,39 +159,14 @@ cp -R "$GSRES"/. "$DEST/share/ghostscript/"
 chown -R root:wheel "$DEST/share/ghostscript"
 chmod -R a+rX "$DEST/share/ghostscript"
 
-# A Homebrew/MacPorts gs links against dylibs in prefixes the sandbox cannot
-# reach either. Copy those in beside it and rewrite the load commands so the
-# binary never looks outside /Library/Printers.
-relocate_libs() {
-    _bin="$1"
-    otool -L "$_bin" 2>/dev/null | tail -n +2 | awk '{print $1}' | \
-    while read -r lib; do
-        case "$lib" in
-            /usr/lib/*|/System/*) continue ;;
-            @*) info "note: $(basename "$_bin") references $lib"; continue ;;
-        esac
-        base=$(basename "$lib")
-        # otool also reports the binary's own install name; that is not a
-        # dependency, and copying it would duplicate the whole of gs.
-        [ "$base" = "$(basename "$_bin")" ] && continue
-        if [ ! -f "$DEST/lib/$base" ] && [ -f "$lib" ]; then
-            cp -L "$lib" "$DEST/lib/$base" 2>/dev/null || continue
-            chmod 755 "$DEST/lib/$base"
-            install_name_tool -id "$DEST/lib/$base" "$DEST/lib/$base" 2>/dev/null || true
-            relocate_libs "$DEST/lib/$base"
-        fi
-        [ -f "$DEST/lib/$base" ] && \
-            install_name_tool -change "$lib" "$DEST/lib/$base" "$_bin" 2>/dev/null || true
-    done
-    # Editing load commands invalidates the signature on Apple Silicon.
-    codesign -f -s - "$_bin" >/dev/null 2>&1 || true
-}
-
-if command -v otool >/dev/null 2>&1; then
-    relocate_libs "$DEST/bin/gs"
-    NLIBS=$(ls -1 "$DEST/lib" 2>/dev/null | wc -l | tr -d ' ')
-    [ "$NLIBS" -gt 0 ] && info "relocated $NLIBS bundled librar(y|ies)"
-fi
+# CUPS cannot reach Homebrew/MacPorts. Relocate every direct and transitive
+# dependency and fail if any external path survives. A prior version silently
+# produced header-only jobs because its recursive shell function lost its
+# original binary name.
+sh "$HERE/relocate-ghostscript.sh" "$DEST" \
+    || die "Ghostscript dependencies could not be relocated."
+NLIBS=$(find "$DEST/lib" -type f -name '*.dylib' | wc -l | tr -d ' ')
+info "relocated $NLIBS bundled libraries"
 
 install -d -o root -g wheel -m 755 "$PPDDIR"
 install -o root -g wheel -m 644 "$HERE/ppd/$PPDNAME" "$PPDDIR/$PPDNAME"

@@ -103,8 +103,28 @@ export LPJOB LPUSER LPHOST
 set -- foo2zjs-wrapper -z2 -P -L0 \
     -p "$PAPER" -m "$MEDIA" -s "$SOURCE" -T "$DENSITY" -n "$COPIES" $DRAFT
 
+# The upstream wrapper can exit successfully after Ghostscript fails, having
+# emitted only a PJL/ZjStream header. Buffer the result so a broken job never
+# reaches the printer and leaves it waiting for missing page data.
+OUTPUT=$(mktemp /private/tmp/foo2zjs.XXXXXX) || exit 1
+trap 'rm -f "$OUTPUT"' EXIT HUP INT TERM
+
 if [ -n "$INFILE" ]; then
-    exec "$@" "$INFILE"
+    "$@" "$INFILE" > "$OUTPUT" || {
+        echo 'ERROR: P1102 raster conversion failed.' >&2
+        exit 1
+    }
 else
-    exec "$@"
+    "$@" > "$OUTPUT" || {
+        echo 'ERROR: P1102 raster conversion failed.' >&2
+        exit 1
+    }
 fi
+
+SIZE=$(wc -c < "$OUTPUT" | tr -d ' ')
+if [ "$SIZE" -lt 600 ] || ! tail -c 30 "$OUTPUT" | grep -aq '@PJL EOJ'; then
+    echo "ERROR: P1102 output contains no complete page ($SIZE bytes)." >&2
+    exit 1
+fi
+
+cat "$OUTPUT"

@@ -101,15 +101,12 @@ structurally valid PJL job header containing **no raster data at all**. The
 printer opens a job, waits forever for page data, and blinks its green Ready
 light. It looks exactly like a hardware or firmware fault. It isn't.
 
-So the installer copies Ghostscript — binary, its resource tree, and any
-non-system dylibs it links against — into `/Library/Printers/foo2zjs`, and
-points the filter at that copy. This costs about 75 MB and is not optional.
-
-`install.sh` ends with a self test that runs the filter under `env -i`, an
-empty environment that reproduces the sandbox, and **fails loudly** if the
-output contains no ZjStream raster. That check is the whole point: it catches
-this class of bug at install time instead of leaving you with a blinking
-printer.
+The installer copies Ghostscript, its resources, and all non-system dynamic
+libraries into `/Library/Printers/foo2zjs`. It rewrites each library reference
+to point to that directory and refuses to finish if a Homebrew or MacPorts
+path remains. An `env -i` self test checks rendering, while the installed CUPS
+filter buffers each job and rejects incomplete output before it reaches the
+printer. A plain `env -i` test alone cannot reproduce the macOS CUPS sandbox.
 
 ## Layout once installed
 
