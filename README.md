@@ -7,7 +7,8 @@ macOS, including Apple Silicon — built on the open-source
 HP never shipped an Apple Silicon driver for this printer, and macOS no longer
 bundles one. This installs a self-contained driver and creates a print queue.
 
-Verified on macOS 26.5 (Apple Silicon) with a P1102 over USB.
+Verified on macOS 26.5 (Apple Silicon) by the original author and on macOS 27.0
+(Apple Silicon) with a P1102 over USB by this fork.
 
 This fork adds a one-command setup that installs missing prerequisites, creates
 the USB print queue, and makes the P1102 the default printer. The driver itself

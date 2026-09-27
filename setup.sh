@@ -57,7 +57,12 @@ sudo "$stage/repo/install.sh" --default
 # CUPS also permits a per-user default, which takes precedence over the
 # system default. Set both so print dialogs launched by this user choose HP.
 lpoptions -d "$QUEUE" >/dev/null
+# macOS can otherwise override the fixed default with its "Last Printer Used"
+# preference, even when both CUPS defaults point to HP.
+defaults write org.cups.PrintingPrefs UseLastPrinter -bool false
 
 lpstat -p "$QUEUE" >/dev/null || die 'The P1102 print queue was not created.'
 lpstat -d | grep -Fq "$QUEUE" || die 'The P1102 is not the default printer.'
+[ "$(defaults read org.cups.PrintingPrefs UseLastPrinter)" = 0 ] \
+    || die 'macOS is still set to use the last printer.'
 say 'Ready. Choose HP LaserJet P1102 in a print dialog, or print normally with Cmd+P.'
