@@ -106,7 +106,8 @@ set -- foo2zjs-wrapper -z2 -P -L0 \
 # The upstream wrapper can exit successfully after Ghostscript fails, having
 # emitted only a PJL/ZjStream header. Buffer the result so a broken job never
 # reaches the printer and leaves it waiting for missing page data.
-OUTPUT=$(mktemp /private/tmp/foo2zjs.XXXXXX) || exit 1
+CUPS_TEMP_DIR=${TMPDIR:-/private/var/spool/cups/tmp}
+OUTPUT=$(mktemp "$CUPS_TEMP_DIR/foo2zjs.XXXXXX") || exit 1
 trap 'rm -f "$OUTPUT"' EXIT HUP INT TERM
 
 if [ -n "$INFILE" ]; then

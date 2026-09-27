@@ -188,9 +188,18 @@ say "Self test (running the filter with an empty environment)"
 
 cat > "$BUILD/t.ps" <<'PSEOF'
 %!PS-Adobe-3.0
+%%Pages: 1
+%%BoundingBox: 0 0 595 842
+%%EndComments
+%%BeginProlog
+%%EndProlog
+%%Page: 1 1
 /Helvetica-Bold findfont 28 scalefont setfont
 72 700 moveto (HP LaserJet P1102 - foo2zjs self test) show
 showpage
+%%PageTrailer
+%%Trailer
+%%EOF
 PSEOF
 
 env -i "$DEST/bin/gs" --version >/dev/null 2>&1 \
@@ -218,6 +227,12 @@ if [ "$SIZE" -lt 2000 ]; then
     die "The filter produced only $SIZE bytes -- the page appears to be empty."
 fi
 info "produced $SIZE bytes of valid ZjStream. Rendering works."
+
+# Exercise the actual CUPS sandbox without sending anything to the printer.
+# An empty environment alone did not catch a sandbox-blocked dynamic library.
+say "CUPS sandbox self test (no paper)"
+python3 "$HERE/verify-cups-sandbox.py" "$PPDDIR/$PPDNAME" "$BUILD/t.ps" \
+    || die "The driver failed inside the macOS CUPS sandbox."
 
 # ---------------------------------------------------------------------------
 # 6. Create the print queue

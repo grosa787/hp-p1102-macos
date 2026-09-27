@@ -106,7 +106,9 @@ libraries into `/Library/Printers/foo2zjs`. It rewrites each library reference
 to point to that directory and refuses to finish if a Homebrew or MacPorts
 path remains. An `env -i` self test checks rendering, while the installed CUPS
 filter buffers each job and rejects incomplete output before it reaches the
-printer. A plain `env -i` test alone cannot reproduce the macOS CUPS sandbox.
+printer. Installation also sends a sample page through a temporary local CUPS
+queue and checks the rendered bytes without using paper. A plain `env -i` test
+alone cannot reproduce the macOS CUPS sandbox.
 
 ## Layout once installed
 

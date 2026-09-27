@@ -15,7 +15,7 @@ dd if=/dev/zero bs=400 count=1 2>/dev/null
 WRAPPER
 chmod 755 "$STAGE/filter" "$STAGE/bin/foo2zjs-wrapper"
 
-if "$STAGE/filter" 1 tester test 1 PageSize=A4 /dev/null \
+if TMPDIR="$STAGE" "$STAGE/filter" 1 tester test 1 PageSize=A4 /dev/null \
         > "$STAGE/output" 2> "$STAGE/error"; then
     echo 'The filter accepted a header-only job' >&2
     exit 1
